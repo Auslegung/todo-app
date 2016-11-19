@@ -1,0 +1,27 @@
+{
+  "name": "to-do-app",
+  "version": "1.0.0",
+  "description": "The best to do app ever.  Period.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Auslegung/todo-app.git"
+  },
+  "keywords": [
+    "to",
+    "do",
+    "app",
+    "gsd"
+  ],
+  "author": "Jason Fry",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Auslegung/todo-app/issues"
+  },
+  "homepage": "https://github.com/Auslegung/todo-app#readme",
+  "dependencies": {},
+  "devDependencies": {}
+}
