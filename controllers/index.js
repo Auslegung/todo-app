@@ -5,6 +5,8 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 require('../config/passport.js')(passport);
 var jwt = require('jwt-simple');
+var config = require('../config/database'); // get db config file
+
 
 // SIGN UP ROUTE
 router.post('/signup', function(req, res){
@@ -27,7 +29,7 @@ router.post('/signup', function(req, res){
 
 // route to login a user
 router.post('/login', function(req, res) {
-  User.findOne({name: req.body.name}, function(err, user) {
+  User.findOne({username: req.body.username}, function(err, user) {
     if (err) throw err;
 
     if (!user) {
@@ -35,15 +37,13 @@ router.post('/login', function(req, res) {
     } else {
       // check if password matches
       user.comparePassword(req.body.password, function (err, isMatch) {
-        console.log(isMatch);
         if (isMatch && !err) {
           // if user is found and password is correct, create a token
           var token = jwt.encode(user, config.secret);
           // return the information including token as JSON
           res.json({success: true, token: 'JWT ' + token});
         } else {
-          console.log('isMatch is:', isMatch, 'error is:', err, 'req.body is:', req.body);
-          res.send({success: false, msg: 'Authentication failed. Incorrect password.', error: isMatch});
+          res.send({success: false, msg: 'Authentication failed. Incorrect password.'});
         }
       });
     }
