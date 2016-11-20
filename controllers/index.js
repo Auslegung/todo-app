@@ -22,4 +22,21 @@ router.post('/signup', function(req, res){
     }); // end router.post
 });
 
+router.post('/login', passport.authenticate('local', {failureRedirect: '/home'}), function(req, res){
+    req.session.save(function(err){
+    if (err) {
+      return next(err);
+    } // end if
+    User.findOne({email: req.session.passport.email}).exec()
+    .then(function(){
+      res.redirect('/' + req.user._id + '/home');
+    }) // end then
+    .catch(function(err){
+      console.log('ERROR:', err);
+      res.head(400);
+    }) // end catch
+  }) // end req.session.save
+});
+
+
 module.exports = router;
