@@ -17,9 +17,8 @@
   "bugs": {
     "url": "https://github.com/Auslegung/todo-app/issues"
   },
-  "homepage": "https://github.com/Auslegung/todo-app#readme"
-},
-"dependencies": {
+  "homepage": "https://github.com/Auslegung/todo-app#readme",
+  "dependencies": {
   "body-parser": "^1.15.2",
   "connect": "^3.5.0",
   "connect-flash": "^0.1.1",
@@ -37,4 +36,5 @@
 },
 "engines": {
   "node": "6.7.0"
+}
 }
