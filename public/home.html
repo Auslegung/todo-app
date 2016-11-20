@@ -1,1 +1,24 @@
-home.html: {{1 + 1}}
+<video playsinline autoplay muted loop poster="./css/Office-Day/SnapShots/Office-Day.jpg">
+  <source src="./css/Office-Day/WEBM/Office-Day.webm" type="video/webm">
+  <source src="./css/Office-Day/MP4/Office-Day.mp4" type="video/mp4">
+</video>
+
+<div class="signup-and-login-form-wrapper">
+
+  <div class="signup-form-wrapper" ng>
+    <form class="signup-and-login-form" method="post" ng-submit="users.signup()">
+      <input type="text" ng-model="users.username" placeholder="email">
+      <input type="text" ng-model="users.password" placeholder="password">
+      <input type="submit" name="signup" value="Signup">
+    </form>
+  </div>
+
+  <div class="login-form-wrapper">
+    <form class="signup-and-login-form" method="post" ng-submit="users.login()">
+      <input type="text" name="username" placeholder="email">
+      <input type="text" name="password" placeholder="password">
+      <input type="button" name="signup" value="Signup">
+    </form>
+  </div>
+
+</div>
