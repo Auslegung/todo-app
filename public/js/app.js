@@ -20,7 +20,7 @@
       controller: 'SignupController'
     })
     .state('login', {
-      url: '/user',
+      url: '/login',
       templateUrl: 'home.html',
       controller: 'LoginController'
     })

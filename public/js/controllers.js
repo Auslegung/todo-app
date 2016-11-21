@@ -61,6 +61,8 @@
     //   }; //end this.login
     // } // end UserController function
 
+    // $popup was causing a $injector:unpr Unknown Provider error
+
     .controller('LoginController', function($scope, AuthService, /*$popup,*/ $state) {
       $scope.user = {
         name: '',
