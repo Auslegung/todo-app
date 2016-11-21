@@ -13,7 +13,7 @@ var ToDoSchema = new Schema({
 })
 
 var UserSchema = new Schema({
-  username: String,
+  username: {type: String, unique: true},
   password: String,
   toDos: [ToDoSchema],
   createdAt: Date,

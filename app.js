@@ -29,7 +29,6 @@ var flash = require('connect-flash');
 app.use(flash());
 
 // Routing
-app.use('/', require('./controllers/index.js'));
 
 // Promises
 var mongoose = require('mongoose');
@@ -41,7 +40,7 @@ mongoose.connect(mongoURI);
 // Login sessions and validation
 var passport = require('passport');
 var User = require('./models/user.js');
-var localStrategy = require('passport-local').Strategy;
+// var localStrategy = require('passport-local').Strategy;
 app.use(require('express-session')({
   secret: 'keyboard cat',
   resave: false,
@@ -58,4 +57,5 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+app.use('/', require('./controllers/index.js'));
 app.listen(process.env.PORT || 3000 );

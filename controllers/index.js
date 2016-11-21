@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/user.js');
 var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
+var User = require('../models/user');
+// var LocalStrategy = require('passport-local').Strategy;
 
 // SIGN UP ROUTE
 router.post('/signup', function(req, res){
@@ -22,21 +23,40 @@ router.post('/signup', function(req, res){
     }); // end router.post
 });
 
-router.post('/login', passport.authenticate('local', {failureRedirect: '/home'}), function(req, res){
-    req.session.save(function(err){
+router.post('/login', passport.authenticate('local'), function(req, res) {
+  req.session.save(function(err) {
     if (err) {
-      return next(err);
-    } // end if
-    User.findOne({email: req.session.passport.email}).exec()
-    .then(function(){
-      res.redirect('/' + req.user._id + '/home');
-    }) // end then
-    .catch(function(err){
-      console.log('ERROR:', err);
-      res.head(400);
-    }) // end catch
-  }) // end req.session.save
+      res.status(406).json({ message: err});
+    } else {
+      User.findOne( {username: req.body.username} ).exec()
+        .then(function(user) {
+          res.status(200).json({ message: 'successful login', user: user});
+        })
+    }
+  });
 });
+
+router.get('/user/:userId/todos', function(req, res) {
+  // console.log(req);
+  User.findById(req.user._id).exec()
+    .then(function(data) {
+      res.status(200).json(data.todos)
+    })
+    .catch(function(err) {
+      console.log(err);
+    });
+})
+
+router.get('/logout', function(req, res) {
+  try {
+    req.logout();
+    res.status(200).json({message: 'logout successful'});
+  } catch(err) {
+    console.log(err);
+  }
+});
+
+router.post('/')
 
 
 module.exports = router;
