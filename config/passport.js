@@ -1,3 +1,5 @@
+// from // from http://devdactic.com/restful-api-user-authentication-1/
+
 var JwtStrategy = require('passport-jwt').Strategy;
 
 // load up the user model

@@ -50,5 +50,8 @@ router.post('/login', function(req, res) {
   });
 });
 
+// get all todos for a user
+// router.get('/todos', )
+
 
 module.exports = router;

@@ -22,22 +22,48 @@ video {
   -moz-transform: translateX(-50%) translateY(-50%);
   -webkit-transform: translateX(-50%) translateY(-50%);
   transform: translateX(-50%) translateY(-50%);
-  background: url(Office-Day.jpg) no-repeat;
+  background: url(Office-Day/SnapShots/Office-Day.jpg) no-repeat;
   background-size: cover;
 }
 
 .signup-and-login-form-wrapper {
-  height: 80vh;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  max-width: 466px;
+  max-height: 520px;
+  padding: 40px;
+  background-color: #24313c;
 }
 
 .signup-and-login-form {
-  height: 20vh;
+  height: 25vh;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   flex-direction: column;
+}
+
+.tab-group {
+  display: flex;
+  flex-direction: row;
+  /*width: 100%;*/
+}
+
+.tab {
+  list-style: none;
+}
+
+li a {
+  /*list-style: none;*/
+  padding: 20px;
+  background-color: rgba(67, 81, 89, 0.8);
+  width: 49%;
+  cursor: pointer;
+  color: white;
+  font-size: 1.5rem;
+  text-align: center;
+  text-decoration: none;
+
 }
