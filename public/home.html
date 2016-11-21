@@ -1,0 +1,27 @@
+<video playsinline autoplay muted loop poster="./css/Office-Day/SnapShots/Office-Day.jpg">
+  <source src="./css/Office-Day/WEBM/Office-Day.webm" type="video/webm">
+  <source src="./css/Office-Day/MP4/Office-Day.mp4" type="video/mp4">
+</video>
+
+<div class="signup-and-login-form-wrapper">
+  <ul class="tab-group">
+    <li class="tab active"><a href="#signup" ng-click="show_signup_form=true">Sign Up</a></li>
+    <li class="tab"><a href="#login" ng-click="show_signup_form=false">Log In</a></li>
+  </ul>
+  <div class="signup-form-wrapper">
+    <form class="signup-and-login-form" method="post" ng-submit="users.signup()" ng-show="show_signup_form" ng-init="show_signup_form=true">
+      <input type="text" ng-model="users.username" placeholder="email">
+      <input type="text" ng-model="users.password" placeholder="password">
+      <button ng-click="signup()" name="signup" value="GET STARTED">
+    </form>
+  </div>
+
+  <div class="login-form-wrapper">
+    <form class="signup-and-login-form" method="post" ng-submit="users.login()" ng-show="!show_signup_form">
+      <input type="text" name="username" placeholder="email">
+      <input type="text" name="password" placeholder="password">
+      <button ng-click="login()" name="login" value="LOG IN">
+    </form>
+  </div>
+
+</div>
