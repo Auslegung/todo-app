@@ -7,50 +7,53 @@
       var self = this;
 
       this.currentUser = null;
-      // this.editedTrip = {};
+      // this.editedToDo = {};
       this.showEditForm = false;
       this.password = '';
       this.signupUsername = null;
       this.signupPassword = null;
       this.signuperror = null;
-      // this.myTrips = [];
-      // this.searchedForTrips = [];
+      // this.myToDos = [];
+      // this.searchedForToDos = [];
       this.searchText = '';
       this.username = '';
 
-      // this.newTrip = {
+      // this.newToDo = {
       //   dateStart: null,
       //   dateEnd: null,
       //   description: null,
       //   foo: null,
       //   place: null,
-      //   tripId: null
+      //   toDoId: null
       // };
 
-      // this.addTrip = function() {
-      //   $http({
-      //     method: 'POST',
-      //     url: '/private/'+self.currentUser,
-      //     data: { data: self.newTrip }
-      //   })
-      //   .then(function(response) {
-      //     //clear the form
-      //     self.newTrip = {};
-      //
-      //     //ask the server for this user's updated trip array
-      //     return $http({
-      //       method: 'GET',
-      //       url: '/user/'+response.data.userId+'/trips'
-      //     })
-      //   })
-      //   .catch(function(err) {
-      //     console.error(err);
-      //   })
-      //   .then(function(response){
-      //     console.log('response is:', response);
-      //     self.myTrips = response.data;
-      //   })
-      // }; //end this.addTrip
+      this.addToDo = function() {
+        $http({
+          method: 'POST',
+          url: '/private/'+self.currentUser,
+          data: { data: self.newToDo }
+        })
+        .then(function(response) {
+          //clear the form
+          self.newToDo = {};
+
+          //ask the server for this user's updated toDo array
+          return $http({
+            method: 'GET',
+            url: '/user/'+response.data.userId+'/toDos'
+          })
+        })
+        .catch(function(err) {
+          console.error(err);
+        })
+        .then(function(response){
+          console.log('response is:', response);
+          self.myToDos = response.data;
+        })
+        .catch(function(err) {
+          console.log(err);
+        })
+      }; //end this.addToDo
 
       this.signup = function() {
         $http({
@@ -95,12 +98,16 @@
         .then(function(response) {
           console.log('in login, response.data is ', response.data);
           self.currentUser = response.data.username;
+          //clear form
+          self.username = '';
+          self.password = '';
+
           return $http({
             method: 'GET',
-            url: '/user/:userId/todos'
+            url: '/user/:userId/toDos'
           })
           .then(function(res){
-            self.myTodos = res.data;
+            self.myToDos = res.data;
           })
           .then(function(){
             $state.go('user');
@@ -114,7 +121,7 @@
       this.logout = function() {
         $http({
           method: 'GET',
-          url: '/logout'
+          url: '/private/logout'
         })
         .then(function(response) {
           console.log('in logout, response.data is ', response.data);
@@ -126,40 +133,40 @@
         });
       }; //end this.logout
 
-      // this.setTripToEdit = function(trip) {
+      // this.setToDoToEdit = function(toDo) {
       //   self.showEditForm = true;
-      //   trip.dateEnd = new Date(trip.dateEnd);
-      //   trip.dateStart = new Date(trip.dateStart);
-      //   self.editedTrip = trip;
-      // }//end setTripToEdit
+      //   toDo.dateEnd = new Date(toDo.dateEnd);
+      //   toDo.dateStart = new Date(toDo.dateStart);
+      //   self.editedToDo = toDo;
+      // }//end setToDoToEdit
 
       /**
-       * Retuns an array of objects with a username and trip information where trips[n].place matches
+       * Retuns an array of objects with a username and toDo information where toDos[n].place matches
        * the search string.
        * @version 1
-       * @param {object} people An array of person objects, each of which contains a property trips[].
-       * @param {string} searchString What to look for in trips[n].place.
-       * @returns {object} result An array of objects which are Trip objects + a username.
+       * @param {object} people An array of person objects, each of which contains a property toDos[].
+       * @param {string} searchString What to look for in toDos[n].place.
+       * @returns {object} result An array of objects which are ToDo objects + a username.
        */
-      var filterTrips = function(people, searchString) {
+      var filterToDos = function(people, searchString) {
         var result = [];
         var testRegex = new RegExp(searchString, 'i');
 
-        console.log('in filterTrips, people is ', people);
-        console.log('in filterTrips, searchString is ', searchString);
+        console.log('in filterToDos, people is ', people);
+        console.log('in filterToDos, searchString is ', searchString);
 
         people.forEach(function(peopleLooper) {
-          for (var i = 0; i < peopleLooper.trips.length; i++) {
-            if (testRegex.test(peopleLooper.trips[i].place)) {
-              peopleLooper.trips[i].username = peopleLooper.username;
-              result.push(peopleLooper.trips[i]);
+          for (var i = 0; i < peopleLooper.toDos.length; i++) {
+            if (testRegex.test(peopleLooper.toDos[i].place)) {
+              peopleLooper.toDos[i].username = peopleLooper.username;
+              result.push(peopleLooper.toDos[i]);
             }
           }
         });
 
-        console.log('at end of filterTrips, result is ', result);
+        console.log('at end of filterToDos, result is ', result);
         return  result;
-      }; //end filterTrips
+      }; //end filterToDos
 
       this.search = function(){
         $http({
@@ -170,20 +177,20 @@
           }
         })
         .then(function(res) {
-          self.searchedForTrips = [];
+          self.searchedForToDos = [];
           var people = res.data;
 
           console.log('after search request, people is ', people);
 
-          console.log('self.searchedForTrips is ', self.searchedForTrips);
+          console.log('self.searchedForToDos is ', self.searchedForToDos);
 
-          self.searchedForTrips = filterTrips(people, self.searchText);
+          self.searchedForToDos = filterToDos(people, self.searchText);
 
           $state.go('search-results')
         })
         /*
         XXX
-        the below code contained within triple x did not work,
+        the below code contained within toDole x did not work,
         but moving `$state.go...` to inside the above `.then` made it
         work.
 
@@ -205,29 +212,29 @@
       }; // end this.search
 
       // DELETE A TRIP FROM A USER'S ARRAY
-      // this.deleteTrip = function(id) {
-      //   $http.delete(`/private/trip/${id}`)
-      //   .then(function(response) {
-      //     //get the most recent trip data
-      //     self.myTrips = response.data;
-      //   });
-      // }; //end this.deleteTrip
+      this.deleteToDo = function(id) {
+        $http.delete(`/private/toDo/${id}`)
+        .then(function(response) {
+          //get the most recent toDo data
+          self.myToDos = response.data;
+        });
+      }; //end this.deleteToDo
 
       // EDIT A TRIP IN A USER'S ARRAY
-      // this.editTrip = function(trip) {
-      //
-      //   self.showEditForm = false;
-      //
-      //   $http.patch(`/private/trip/${trip.tripId}`, {tripData: trip})
-      //   .then(function(response) {
-      //     console.log(response.data);
-      //
-      //     //don't need to update self.myTrips because editing newTrip updates
-      //     //it in real time
-      //
-      //     $state.go('user');
-      //   });
-      // }; //end this.editTrip
+      this.editToDo = function(toDo) {
+
+        self.showEditForm = false;
+
+        $http.patch(`/private/toDo/${toDo.toDoId}`, {toDoData: toDo})
+        .then(function(response) {
+          console.log(response.data);
+
+          //don't need to update self.myToDos because editing newToDo updates
+          //it in real time
+
+          $state.go('user');
+        });
+      }; //end this.editToDo
 
     } // end UserController function
 })()

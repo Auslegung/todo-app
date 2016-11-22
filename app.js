@@ -57,5 +57,7 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+app.use('/private', require('./controllers/private.js'));
 app.use('/', require('./controllers/index.js'));
+
 app.listen(process.env.PORT || 3000 );

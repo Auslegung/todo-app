@@ -1,26 +1,18 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var passportLocalMongoose= require('passport-local-mongoose');
-
-var ToDoSchema = new Schema({
-  title: String,
-  notes: String,
-  isComplete: Boolean,
-  startDate: {type: Date, default: Date.now},
-  dueDate: Date,
-  createdAt: Date,
-  updatedAt: Date
-})
+ToDoSchema = require('./todo.js').schema;
 
 var UserSchema = new Schema({
   username: {type: String, unique: true},
   password: String,
   toDos: [ToDoSchema],
-  createdAt: Date,
+  createdAt: {type: Date, default: Date.now},
   updatedAt: Date
 });
 
 UserSchema.plugin(passportLocalMongoose);
 var User = mongoose.model('User', UserSchema);
+var ToDo = mongoose.model('ToDo', ToDoSchema);
 
-module.exports = User;
+module.exports = User
