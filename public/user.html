@@ -37,7 +37,7 @@
   <!-- ADD A NEW todo -->
   <div class="module-card">
     <form class="new-destination" ng-submit="user.addToDo()" method="post">
-      <div class="module-card-title"><input type="text" ng-model="user.newToDo.title" id="title" placeholder="Click to add toDo"></div>
+      <div class="module-card-title"><input type="text" ng-model="user.newToDo.title" id="title" placeholder="title"></div>
       <div class="module-card-meta">
         <div class="module-card-category">
           <span class="fa fa-tag"></span>
@@ -47,7 +47,7 @@
         <div class="module-card-author">
           <label for="dateDue">Due:      </label>
           <span class="fa fa-user"></span>
-          <span><input type="date" ng-model="user.editedToDo.dateDue" id="dateDue" placeholder=""></span>
+          <span><input type="date" ng-model="user.newToDo.dateDue" id="dateDue" placeholder=""></span>
         </div>
       </div> <!-- /module-card-meta -->
 
@@ -63,7 +63,7 @@
     </form>
   </div>
 
-<!-- SHOW ALL todos AS CARDS -->
+<!-- SHOW ALL toDos AS CARDS -->
   <div class="module-card" ng-repeat="toDo in user.myToDos">
     <div class="module-card-title">{{toDo.title}}</div>
     <div class="module-card-meta">

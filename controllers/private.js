@@ -23,6 +23,11 @@ router.get('/logout', function(req,res) {
 
 //add toDo
 router.post('/:username', authorize, function(req,res) {
+  // User.findByIdAndUpdate(
+  //   req.user._id,
+  //   {$push: {"toDos": {title: title, notes: notes, dateDue: dateDue, updatedAt: Date.now()}}},
+  //   {new: true}
+  // )
     User.findOne({username: req.user.username}).exec()
     .then(function(user){
       if (!user) {
@@ -34,13 +39,12 @@ router.post('/:username', authorize, function(req,res) {
       console.log('in add toDo, req.body is ', req.body);
       console.log('in add toDo, req.user is ', req.user);
       var newToDo = req.body.data;
-      newToDo.toDoId = Date.now().toString();
 
-      user.toDos.push(new ToDo(newToDo));
+      user.toDos.unshift(newToDo);
       return user.save();
     })
     .then(function(data) {
-      res.status(201).json({message: 'created'});
+      res.status(201).json({data});
     })
     .catch(function(err) {
       console.error(err);

@@ -7,25 +7,26 @@
       var self = this;
 
       this.currentUser = null;
-      // this.editedToDo = {};
+      this.editedToDo = {};
       this.showEditForm = false;
       this.password = '';
       this.signupUsername = null;
       this.signupPassword = null;
       this.signuperror = null;
       this.myToDos = [];
-      // this.searchedForToDos = [];
+      this.searchedForToDos = [];
       this.searchText = '';
       this.username = '';
 
-      // this.newToDo = {
-      //   dateStart: null,
-      //   dateEnd: null,
-      //   description: null,
-      //   foo: null,
-      //   place: null,
-      //   toDoId: null
-      // };
+      this.newToDo = {
+        title: null,
+        notes: null,
+        isComplete: null,
+        dateStart: null,
+        dateDue: null,
+        createdAt: null,
+        updatedAt: null
+      };
 
       this.addToDo = function() {
         $http({
@@ -33,22 +34,22 @@
           url: '/private/'+self.currentUser,
           data: { data: self.newToDo }
         })
-        .then(function(response) {
+        .then(function(res) {
           //clear the form
           self.newToDo = {};
-
+          console.log('res.data is:', res.data);
           //ask the server for this user's updated toDo array
           return $http({
             method: 'GET',
-            url: '/user/'+response.data.userId+'/toDos'
+            url: '/user/'+res.data.userId+'/toDos'
           })
         })
         .catch(function(err) {
           console.error(err);
         })
-        .then(function(response){
-          console.log('response.data is:', response.data);
-          self.myToDos = response.data;
+        .then(function(res){
+          console.log('res.data is:', res.data);
+          self.myToDos = res.data;
         })
         .catch(function(err) {
           console.log(err);
@@ -64,8 +65,8 @@
             password: self.signupPassword
           }
         })
-        .then(function(response) {
-          console.log('in signup, response.data is ', response.data);
+        .then(function(res) {
+          console.log('in signup, res.data is ', res.data);
 
           //clear form
           self.signupUsername = '';
@@ -95,9 +96,9 @@
             password: self.password
           }
         })
-        .then(function(response) {
-          console.log('in login, response.data is ', response.data);
-          self.currentUser = response.data.username;
+        .then(function(res) {
+          console.log('in login, res.data is ', res.data);
+          self.currentUser = res.data.username;
           //clear form
           self.username = '';
           self.password = '';
@@ -123,8 +124,8 @@
           method: 'GET',
           url: '/private/logout'
         })
-        .then(function(response) {
-          console.log('in logout, response.data is ', response.data);
+        .then(function(res) {
+          console.log('in logout, res.data is ', res.data);
           self.currentUser = null;
           $state.go('home');
         })
@@ -214,9 +215,9 @@
       // DELETE A toDo FROM A USER'S ARRAY
       this.deleteToDo = function(id) {
         $http.delete(`/private/:userId/home/${id}`)
-        .then(function(response) {
+        .then(function(res) {
           //get the most recent toDo data
-          self.myToDos = response.data;
+          self.myToDos = res.data;
         })
         .catch(function(err) {
           console.log(err);
@@ -229,8 +230,8 @@
         self.showEditForm = false;
 
         $http.patch(`/private/toDo/${toDo.toDoId}`, {toDoData: toDo})
-        .then(function(response) {
-          console.log(response.data);
+        .then(function(res) {
+          console.log(res.data);
 
           //don't need to update self.myToDos because editing newToDo updates
           //it in real time
