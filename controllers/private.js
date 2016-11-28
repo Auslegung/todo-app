@@ -21,7 +21,7 @@ router.get('/logout', function(req,res) {
   }
 });
 
-//add trip
+//add toDo
 router.post('/:username', authorize, function(req,res) {
     User.findOne({username: req.user.username}).exec()
     .then(function(user){
@@ -31,8 +31,8 @@ router.post('/:username', authorize, function(req,res) {
         console.log('found ', user.username);
       }
 
-      console.log('in add trip, req.body is ', req.body);
-      console.log('in add trip, req.user is ', req.user);
+      console.log('in add toDo, req.body is ', req.body);
+      console.log('in add toDo, req.user is ', req.user);
       var newToDo = req.body.data;
       newToDo.toDoId = Date.now().toString();
 
@@ -47,8 +47,8 @@ router.post('/:username', authorize, function(req,res) {
     });
 });
 
-//edit trip
-router.patch('/trip/:toDoId', authorize, function(req,res) {
+//edit toDo
+router.patch('/toDo/:toDoId', authorize, function(req,res) {
   console.log('in edit route, req.body is ', req.body);
 
   User.findById(req.user._id).exec()
@@ -58,11 +58,11 @@ router.patch('/trip/:toDoId', authorize, function(req,res) {
       return;
     }
 
-    user.toDos.forEach(function(item){
-      if (item.toDoId === req.params.toDoId) {
+    user.toDos.forEach(function(toDo){
+      if (toDo.toDoId === req.params.toDoId) {
         console.log('found a match');
-        for (property in req.body.tripData) {
-          item[property] = req.body.tripData[property];
+        for (property in req.body.toDoData) {
+          toDo[property] = req.body.toDoData[property];
         }
       }
     });
@@ -79,32 +79,74 @@ router.patch('/trip/:toDoId', authorize, function(req,res) {
   });
 });
 
-//delete trip
-router.delete('/trip/:toDoId', authorize, function(req,res) {
-  User.findById(req.user._id).exec()
-  .then(function(user){
-    if (!user) {
-      res.status(400).json({message: 'user not found'});
-      return;
-    }
-
-    var removeItemAt = user.toDos.findIndex(function(item){
-      return item.toDoId === req.params.toDoId;
+router.delete('/:userId/home/:toDoId', function(req, res){
+  // console.log('req.body is:', req.body);
+  // if (req.body.update === '') {
+  //   User.findOneAndUpdate(
+  //     {'_id': req.params.userId, 'toDos._id': req.params.toDoId},
+  //     {$set: {
+  //       'toDos.$.name': req.body.name,
+  //       // 'toDos.$.image': req.body.image,
+  //       'toDos.$.description': req.body.description,
+  //       'toDos.$.new': req.body.new,
+  //       'toDos.$.stillNeeded': req.body.stillNeeded,
+  //       'toDos.$.registryType': 'baby'
+  //     }}, // end $set:
+  //     {upsert: true, returnNewDocument: true}
+  //   ) // end User.findOneAndUpdate()
+  //   .catch(function(err){
+  //     console.log(err);
+  //   })
+  //   .then(function(updatedItem){
+  //     res.redirect('/'+req.params.userId+'/home/')
+  //   })
+  // } // end if
+  // else if (req.body.delete === '') {
+    User.findOneAndUpdate(
+      {'_id': req.user._id},
+      {$pull: {'toDos': {'_id': req.params.toDoId}}
+    })
+    .catch(function(err){
+      console.log(err);
+    })
+    .then(function(data){
+      res.status(200).json(data.toDos);
+    })
+    .catch(function(err){
+      console.log(err);
     });
-
-    if (removeItemAt !== -1) {
-      user.toDos.splice(removeItemAt, 1);
-    }
-
-    return user.save();
-  })
-  .then(function(data) {
-    console.log('removed the toDo');
-    res.status(200).json(data.toDos);
-  })
-  .catch(function(err) {
-    console.error(err);
-  });
+  // } // end if
 });
+
+//delete toDo
+// router.delete('/toDo/:toDoId', authorize, function(req,res) {
+//   User.findById(req.user._id).exec()
+//   .then(function(user){
+//     if (!user) {
+//       res.status(400).json({message: 'user not found'});
+//       return;
+//     }
+//     var removeToDoAt = user.toDos.findIndex(function(toDo){
+//       console.log('toDo._id is:         ', toDo._id);
+//       console.log('req.params.toDoId is:', req.params.toDoId);
+//       if (toDo._id === req.params.toDoId) {
+//         return 1;
+//       }
+//       return -1;
+//     });
+//     if (removeToDoAt !== -1) {
+//       user.toDos.splice(removeToDoAt, 1);
+//     }
+//     console.log('removeToDoAt is:', removeToDoAt);
+//     return user.save();
+//   })
+//   .then(function(data) {
+//     console.log('removed the toDo');
+//     res.status(200).json(data.toDos);
+//   })
+//   .catch(function(err) {
+//     console.error(err);
+//   });
+// });
 
 module.exports = router;

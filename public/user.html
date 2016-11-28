@@ -2,9 +2,10 @@
   <input type="submit" name="logout" value="LOG OUT">
 </form>
 
+<!-- EDIT todo FORM -->
 <div class="module-card" ng-show="user.showEditForm">
   <form class="new-destination" ng-submit="user.editToDo(user.editedToDo)" method="post">
-    <div class="module-card-title"><input type="text" ng-model="user.editedToDo.place" id="place" value=""></div>
+    <div class="module-card-title"><input type="text" ng-model="user.editedToDo.title" id="title" value=""></div>
     <div class="module-card-meta">
       <div class="module-card-category">
         <span class="fa fa-tag"></span>
@@ -21,7 +22,7 @@
     <div class="module-card-bottom">
       <input type="url" ng-model="user.editedToDo.imageUrl" id="imageUrl" placeholder="image url">
       <div>
-        <textarea ng-model="user.editedToDo.description" rows="6" cols="25" id="description" placeholder="describe your toDo in 160 characters or less" maxlength="160"></textarea>
+        <textarea ng-model="user.editedToDo.notes" rows="6" cols="25" id="notes" placeholder="notes: 160 characters or less" maxlength="160"></textarea>
       </div>
       <div class="module-card-button-wrap">
         <button class="module-card-button">Update!</button>
@@ -30,11 +31,13 @@
   </form>
 </div>
 
+
 <div class="module-card-wrap">
-  <!-- Add a new destination -->
+
+  <!-- ADD A NEW todo -->
   <div class="module-card">
     <form class="new-destination" ng-submit="user.addToDo()" method="post">
-      <div class="module-card-title"><input type="text" ng-model="user.newToDo.place" id="place" placeholder="Click to add toDo"></div>
+      <div class="module-card-title"><input type="text" ng-model="user.newToDo.title" id="title" placeholder="Click to add toDo"></div>
       <div class="module-card-meta">
         <div class="module-card-category">
           <span class="fa fa-tag"></span>
@@ -42,16 +45,16 @@
           <span><input type="date" ng-model="user.newToDo.dateStart" id="dateStart" placeholder="start date"></span>
         </div>
         <div class="module-card-author">
-          <label for="dateDue">End:      </label>
+          <label for="dateDue">Due:      </label>
           <span class="fa fa-user"></span>
           <span><input type="date" ng-model="user.editedToDo.dateDue" id="dateDue" placeholder=""></span>
         </div>
       </div> <!-- /module-card-meta -->
 
       <div class="module-card-bottom">
-        <input type="url" ng-model="user.newToDo.imageUrl" id="imageUrl" placeholder="image url">
+        <!-- <input type="url" ng-model="user.newToDo.imageUrl" id="imageUrl" placeholder="image url"> -->
         <div>
-          <textarea ng-model="user.newToDo.description" rows="6" cols="25" id="description" placeholder="describe your toDo in 160 characters or less" maxlength="160"></textarea>
+          <textarea ng-model="user.newToDo.notes" rows="6" cols="25" id="notes" placeholder="notes: 160 characters or less" maxlength="160"></textarea>
         </div>
         <div class="module-card-button-wrap">
           <button class="module-card-button">Add!</button>
@@ -59,9 +62,10 @@
       </div>
     </form>
   </div>
-<!-- Repeat through all destinations and display as cards -->
+
+<!-- SHOW ALL todos AS CARDS -->
   <div class="module-card" ng-repeat="toDo in user.myToDos">
-    <div class="module-card-title">{{toDo.place}}</div>
+    <div class="module-card-title">{{toDo.title}}</div>
     <div class="module-card-meta">
       <div class="module-card-category">
         <span class="fa fa-tag"></span>
@@ -74,15 +78,16 @@
     </div> <!-- /module-card-meta -->
 
     <div class="module-card-bottom">
-      <img src="{{toDo.imageUrl}}" alt="cheesecake" class="module-card-img" />
+      <!-- <img src="{{toDo.imageUrl}}" alt="cheesecake" class="module-card-img" /> -->
 
       <div>
         <p>{{toDo.notes}}</p>
       </div>
       <div class="module-card-button-wrap">
-        <button ng-click="user.deleteToDo(toDo.toDoId)" class="module-card-button">Delete Me!</button>
+        <button ng-click="user.deleteToDo(toDo._id)" class="module-card-button">Delete Me!</button>
         <button ng-click="user.setToDoToEdit(toDo)" class="module-card-button">Edit Me!</button>
       </div>
     </div>
   </div>
-</div>
+
+</div> <!-- END module-card-wrap -->

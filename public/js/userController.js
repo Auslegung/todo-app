@@ -13,7 +13,7 @@
       this.signupUsername = null;
       this.signupPassword = null;
       this.signuperror = null;
-      // this.myToDos = [];
+      this.myToDos = [];
       // this.searchedForToDos = [];
       this.searchText = '';
       this.username = '';
@@ -47,7 +47,7 @@
           console.error(err);
         })
         .then(function(response){
-          console.log('response is:', response);
+          console.log('response.data is:', response.data);
           self.myToDos = response.data;
         })
         .catch(function(err) {
@@ -211,16 +211,19 @@
         })
       }; // end this.search
 
-      // DELETE A TRIP FROM A USER'S ARRAY
+      // DELETE A toDo FROM A USER'S ARRAY
       this.deleteToDo = function(id) {
-        $http.delete(`/private/toDo/${id}`)
+        $http.delete(`/private/:userId/home/${id}`)
         .then(function(response) {
           //get the most recent toDo data
           self.myToDos = response.data;
+        })
+        .catch(function(err) {
+          console.log(err);
         });
       }; //end this.deleteToDo
 
-      // EDIT A TRIP IN A USER'S ARRAY
+      // EDIT A toDo IN A USER'S ARRAY
       this.editToDo = function(toDo) {
 
         self.showEditForm = false;
