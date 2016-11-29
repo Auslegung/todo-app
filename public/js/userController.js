@@ -37,7 +37,6 @@
         .then(function(res) {
           //clear the form
           self.newToDo = {};
-          console.log('res.data is:', res.data);
           //ask the server for this user's updated toDo array
           return $http({
             method: 'GET',
@@ -48,7 +47,6 @@
           console.error(err);
         })
         .then(function(res){
-          console.log('res.data is:', res.data);
           self.myToDos = res.data;
         })
         .catch(function(err) {
@@ -134,12 +132,10 @@
         });
       }; //end this.logout
 
-      // this.setToDoToEdit = function(toDo) {
-      //   self.showEditForm = true;
-      //   toDo.dateEnd = new Date(toDo.dateEnd);
-      //   toDo.dateStart = new Date(toDo.dateStart);
-      //   self.editedToDo = toDo;
-      // }//end setToDoToEdit
+      this.setToDoToEdit = function(toDo) {
+        self.showEditForm = true;
+        self.editedToDo = toDo;
+      }//end setToDoToEdit
 
       /**
        * Retuns an array of objects with a username and toDo information where toDos[n].place matches
@@ -214,6 +210,7 @@
 
       // DELETE A toDo FROM A USER'S ARRAY
       this.deleteToDo = function(id) {
+        console.log('you clicked on the delete button for toDo._id:', id);
         $http.delete(`/private/:userId/home/${id}`)
         .then(function(res) {
           //get the most recent toDo data
@@ -226,16 +223,14 @@
 
       // EDIT A toDo IN A USER'S ARRAY
       this.editToDo = function(toDo) {
-
+        console.log('toDo is:', toDo);
         self.showEditForm = false;
-
-        $http.patch(`/private/toDo/${toDo.toDoId}`, {toDoData: toDo})
+        toDo.updatedAt = Date.now();
+        $http.patch(`/private/toDo/${toDo._id}`, {toDo: toDo})
         .then(function(res) {
-          console.log(res.data);
-
           //don't need to update self.myToDos because editing newToDo updates
           //it in real time
-
+          console.log('res is:', res);
           $state.go('user');
         });
       }; //end this.editToDo

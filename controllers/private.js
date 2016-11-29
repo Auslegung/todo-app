@@ -53,7 +53,29 @@ router.post('/:username', authorize, function(req,res) {
 
 //edit toDo
 router.patch('/toDo/:toDoId', authorize, function(req,res) {
-  console.log('in edit route, req.body is ', req.body);
+  console.log('req.user is:', req.user);
+  console.log('req.params.toDoId is:', req.params.toDoId);
+
+  // User.findOneAndUpdate(
+  //   {'_id': req.user._id, 'toDo._id': req.params.toDoId},
+  //   {$set: {
+  //     'toDo.$.title': req.body.title,
+  //     'toDo.$.notes': req.body.notes,
+  //     'toDo.$.isComplete': req.body.isComplete,
+  //     'toDo.$.dateStart': req.body.dateStart,
+  //     'toDo.$.dateDue': req.body.dateDue,
+  //   }}, // end $set:
+  //   {upsert: true, new: true}
+  // ) // end User.findOneAndUpdate()
+  // .then(function(user){
+  //   return user.save();
+  // })
+  // .catch(function(err){
+  //   console.log(err);
+  // })
+  // .then(function(user) {
+  //   res.status(200).json({user: user});
+  // })
 
   User.findById(req.user._id).exec()
   .then(function(user){
@@ -61,12 +83,13 @@ router.patch('/toDo/:toDoId', authorize, function(req,res) {
       res.status(400).json({message: 'user not found'});
       return;
     }
-
     user.toDos.forEach(function(toDo){
-      if (toDo.toDoId === req.params.toDoId) {
+      // toDo._id is an object, req.params.toDoId is a string.  It took me 5
+      // fucking hours to figure this out.
+      if (toDo._id.toString() == req.params.toDoId) {
         console.log('found a match');
-        for (property in req.body.toDoData) {
-          toDo[property] = req.body.toDoData[property];
+        for (property in req.body.toDo) {
+          toDo[property] = req.body.toDo[property];
         }
       }
     });
@@ -84,32 +107,11 @@ router.patch('/toDo/:toDoId', authorize, function(req,res) {
 });
 
 router.delete('/:userId/home/:toDoId', function(req, res){
-  // console.log('req.body is:', req.body);
-  // if (req.body.update === '') {
-  //   User.findOneAndUpdate(
-  //     {'_id': req.params.userId, 'toDos._id': req.params.toDoId},
-  //     {$set: {
-  //       'toDos.$.name': req.body.name,
-  //       // 'toDos.$.image': req.body.image,
-  //       'toDos.$.description': req.body.description,
-  //       'toDos.$.new': req.body.new,
-  //       'toDos.$.stillNeeded': req.body.stillNeeded,
-  //       'toDos.$.registryType': 'baby'
-  //     }}, // end $set:
-  //     {upsert: true, returnNewDocument: true}
-  //   ) // end User.findOneAndUpdate()
-  //   .catch(function(err){
-  //     console.log(err);
-  //   })
-  //   .then(function(updatedItem){
-  //     res.redirect('/'+req.params.userId+'/home/')
-  //   })
-  // } // end if
-  // else if (req.body.delete === '') {
     User.findOneAndUpdate(
       {'_id': req.user._id},
-      {$pull: {'toDos': {'_id': req.params.toDoId}}
-    })
+      {$pull: {'toDos': {'_id': req.params.toDoId}}},
+      {new: true}
+    )
     .catch(function(err){
       console.log(err);
     })
@@ -119,7 +121,6 @@ router.delete('/:userId/home/:toDoId', function(req, res){
     .catch(function(err){
       console.log(err);
     });
-  // } // end if
 });
 
 //delete toDo

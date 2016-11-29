@@ -7,11 +7,12 @@ var User = require('../models/user');
 
 // SIGN UP ROUTE
 router.post('/signup', function(req, res){
+  var now = Date.now();
   User.register(new User({
     username: req.body.username,
     toDos: [],
-    createdAt: Date.now(),
-    // updatedAt: Date.now(),
+    createdAt: now,
+    updatedAt: now,
     }),
     req.body.password,
     function(err, user) {
