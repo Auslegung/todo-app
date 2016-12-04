@@ -1,7 +1,7 @@
-<!-- <video playsinline autoplay muted loop poster="./css/Office-Day/SnapShots/Office-Day.jpg">
+<video playsinline autoplay muted loop poster="./css/Office-Day/SnapShots/Office-Day.jpg">
   <source src="./css/Office-Day/WEBM/Office-Day.webm" type="video/webm">
   <source src="./css/Office-Day/MP4/Office-Day.mp4" type="video/mp4">
-</video> -->
+</video>
 
 <div class="signup-and-login-form-wrapper">
   <ul class="tab-group">
@@ -10,7 +10,7 @@
   </ul>
   <div class="signup-form-wrapper">
     <form class="signup-and-login-form" method="post" ng-submit="user.signup()" ng-show="show_signup_form" ng-init="show_signup_form=true">
-      <input type="text" ng-model="user.signupUsername" placeholder="email">
+      <input type="text" ng-model="user.signupUsername" placeholder="email" autofocus="true">
       <input type="text" ng-model="user.signupPassword" placeholder="password">
       <input type="submit" name="signup" value="GET STARTED">
     </form>

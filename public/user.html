@@ -10,17 +10,17 @@
       <div class="module-card-category">
         <span class="fa fa-tag"></span>
         <label for="dateStart">Start:      </label>
-        <span><input type="date" ng-model="user.editedToDo.dateStart" id="dateStart" placeholder="start date"></span>
+        <span><input type="date" ng-model="user.editedToDo.dateStart" id="dateStart"></span>
       </div>
       <div class="module-card-author">
         <label for="dateDue">End:      </label>
         <span class="fa fa-user"></span>
-        <span><input type="date" ng-model="user.editedToDo.dateDue" id="dateDue" placeholder=""></span>
+        <span><input type="date" ng-model="user.editedToDo.dateDue" id="dateDue"></span>
       </div>
     </div> <!-- /module-card-meta -->
 
     <div class="module-card-bottom">
-      <input type="url" ng-model="user.editedToDo.imageUrl" id="imageUrl" placeholder="image url">
+      <!-- <input type="url" ng-model="user.editedToDo.imageUrl" id="imageUrl" placeholder="image url"> -->
       <div>
         <textarea ng-model="user.editedToDo.notes" rows="6" cols="25" id="notes" placeholder="notes: 160 characters or less" maxlength="160"></textarea>
       </div>
@@ -65,7 +65,7 @@
 
 <!-- SHOW ALL toDos AS CARDS -->
   <div class="module-card" ng-repeat="toDo in user.myToDos">
-    <div class="module-card-title">{{toDo.title}}, id:{{toDo._id}}</div>
+    <div class="module-card-title">{{toDo.title}}</div>
     <div class="module-card-meta">
       <div class="module-card-category">
         <span class="fa fa-tag"></span>
